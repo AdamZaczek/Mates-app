@@ -1,0 +1,9 @@
+<h3>Group name: <%= @group.group_name %></h3></br>
+<h4>Members: <%= @group.memberships.count %></h4>
+<p>Add new members to: <%= @group.group_name %>group</br></br>
+<%= form_for @group, :url => invite_group_path(@group), :method => :put do |f| %>
+    <%= f.collection_check_boxes :user_ids,
+    User.all.where("id != ?", current_user.id), :id, :email %>
+    <%= f.submit "Add users" %>
+<% end %>
+<%= link_to 'Back', groups_path %>

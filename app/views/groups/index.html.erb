@@ -1,0 +1,13 @@
+<h4>Your groups</h4>
+
+<% @groups.each do |group| %>
+    <%= link_to group.group_name, group %> </br>
+<% end %>
+
+<h4>Users you may want to add to your groups</h4>
+<% @users.each do |user| %>
+    <%= user.email %> </br>
+<% end %>
+
+<h4>Do you wish to create a group?</h4>
+<%= link_to "Add groups", new_group_path %> </br>
