@@ -10,7 +10,7 @@ end
 
 
 
-describe "simple page behavior for logged users" do  
+describe "app behavior for logged users" do  
   before :each do    
     visit "/users/sign_up"
   
@@ -20,6 +20,8 @@ describe "simple page behavior for logged users" do
   
     click_button "Sign up"
     
+    @group = create(:group_with_users, :users_count => 1)
+    
   end
   it "allows logged users to visit index page" do
     visit "/"
@@ -27,7 +29,7 @@ describe "simple page behavior for logged users" do
     expect(page).to have_content("Your groups")
   end
   
-    it "shows create group page" do
+  it "shows create group page" do
     visit "/groups/new"
 
     expect(page).to have_content("Add a group!")
@@ -43,24 +45,31 @@ describe "simple page behavior for logged users" do
     expect(page).to have_content("Add new members to: skate contest")
   end
   
+  it "creates group" do
+    expect{ create(:group) }.to change{Group.count}.by(1)
+  end
+  
+  
+  it "assigns group to user" do
+    expect(User.last.groups.count).to equal 1
+  end
+    
+  it "allows group to have many users" do
+    @group = create(:group_with_users)
+      
+    expect(@group.users.count).to equal 5
+  end
+    
+  it "allows user to has many groups" do
+    @user = create(:user_with_groups)
+      
+    expect(@user.groups.count).to equal 5
+  end
+    
   it "logouts" do
     click_link "Logout"
     
     expect(page).to have_content("You need to sign in or sign up before continuing.")    
   end
-end
-  
-  
-describe "user and group interactions" do  
-  before :each do   
-    visit "/"
-    user = FactoryGirl.create(:user)
-    login_as(user, :scope => :user)
-  end
-  
-  it "to be filled" do
-    visit "/"
-    
-    expect(page).to have_content("Your groups")
-  end
+
 end

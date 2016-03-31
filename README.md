@@ -1,1 +1,1 @@
-Relational databases give you headache from time to time.
+Many to many relationship app where members of groups can invite others.
